@@ -44,8 +44,10 @@ namespace TextToPhysicalInator
             .ConvertToAsc2()
             .ToUpper()
             .Split(' ')
-            .SelectMany(x => x.Select(y => morse.ContainsKey(y) ? morse[y] + "2" : ""))
-            .Aggregate(String.Concat);
+            .Select(x => x.Select(y => morse.ContainsKey(y) ? morse[y] : "")
+                          .Where(x => x != string.Empty)
+                          .Aggregate((x,y) => String.Concat(x, "2", y)))
+            .Aggregate((x, y) => String.Concat(x, "222", y));
     }
 
     public static class TextExtension
